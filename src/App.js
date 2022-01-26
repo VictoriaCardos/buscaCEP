@@ -1,15 +1,16 @@
 import { GlobalStyle } from './styles/global'
+import { ContextProvider } from './context/index'
 import Container from './components/containerBox/index'
-import Search from './components/form'
+import Form from './components/form'
 
 function App() {
   return (
-    <>
+    <ContextProvider>
       <GlobalStyle />
       <Container>
-        <Search />
+        <Form />
       </Container>
-    </>
+    </ContextProvider>
   )
 }
 
