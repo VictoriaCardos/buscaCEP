@@ -13,6 +13,6 @@ export const Cont = styled.div`
   align-items: center;
 
   h1 {
-    color: var(--title);
+    color: var(--gray);
   }
 `
