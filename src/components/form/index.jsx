@@ -1,3 +1,6 @@
+import search from '../../assets/search.svg'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { useState, useContext } from 'react'
 import { context } from '../../context'
 import { api } from '../../services/api'
@@ -14,22 +17,53 @@ const Form = () => {
   async function handleSubmit(event) {
     event.preventDefault()
 
-    try {
-      const response = await api.get(`/${searchedCep}/json/`)
+    if (searchedCep === '') {
+      toast.error('Insira um CEP primeiro')
+      return
+    } else {
+      try {
+        const response = await api.get(`/${searchedCep}/json/`)
 
-      ctx.setCep(response.data)
-      console.log('deu certo??')
-    } catch (err) {
-      console.log(err)
-      alert('cep não encontrado')
+        ctx.setCep(response.data)
+        toast.success('CEP encontrado!', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      } catch {
+        toast.error('CEP não encontrado')
+      }
     }
+
+    setSearchedCep('')
   }
 
   return (
     <Content onSubmit={handleSubmit}>
-      <input type="text" value={searchedCep} onChange={onChangeHandler} />
-      <button type="submit">PESQUISAR</button>
-      {ctx.cep?.cep ? <h2>{ctx.cep?.logradouro}</h2> : undefined}
+      <input
+        placeholder="Digite o CEP desejado"
+        type="text"
+        value={searchedCep}
+        onChange={onChangeHandler}
+      />
+      <button type="submit">
+        <img src={search} alt="search" />
+      </button>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Content>
   )
 }
